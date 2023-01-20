@@ -1,7 +1,7 @@
 node {
     def mvnHome
     stage('Preparation') {
-        mvnHome = tool 'M3'
+        mvnHome = tool 'MAVEN_HOME'
         sh "${mvnHome}/bin/mvn --version"
     }
     stage('Build') {
