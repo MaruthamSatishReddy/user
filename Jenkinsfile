@@ -5,9 +5,9 @@ pipeline {
                  jdk 'JDK-17'
     }
     stages {      
-        stage('Build maven ') {
+        stage('Maven Build') {
             steps { 
-                    sh 'pwd'      
+                
                     sh 'mvn  clean install package'
             }
         }
