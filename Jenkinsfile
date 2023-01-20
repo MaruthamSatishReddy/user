@@ -1,10 +1,15 @@
-node {
-    def mvnHome
-    stage('Preparation') {
-        mvnHome = tool 'MAVEN_HOME'
-        sh "${mvnHome}/bin/mvn --version"
+pipeline {
+    agent any
+    tools {
+    maven 'Maven 3.6.3'
     }
-    stage('Build') {
-        sh "${mvnHome}/bin/mvn clean install"
+    stages {
+        stage('Maven Build') {
+           steps{
+               withMaven(maven: 'Maven 3.6.3') {
+               sh 'mvn clean install'
+           }
+         }
+       }
     }
-}
+  }
