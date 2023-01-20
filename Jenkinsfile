@@ -1,8 +1,8 @@
 pipeline {
   agent any
     tools {
-      maven 'maven3'
-                 jdk 'JDK8'
+      maven 'Maven'
+                 jdk 'JDK-17'
     }
     stages {      
         stage('Build maven ') {
@@ -11,14 +11,6 @@ pipeline {
                     sh 'mvn  clean install package'
             }
         }
-        
-        stage('Copy Artifact') {
-           steps { 
-                   sh 'pwd'
-		   sh 'cp -r target/*.jar docker'
-           }
-        }
-         
         stage('Build docker image') {
            steps {
                script {         
