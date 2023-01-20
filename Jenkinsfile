@@ -8,18 +8,10 @@ pipeline {
         stage('Maven Build') {
             steps { 
                 
-                    sh 'mvn  clean install package'
+                    sh 'mvn  clean install'
             }
         }
-        stage('Build docker image') {
-           steps {
-               script {         
-                 def customImage = docker.build('satishlakshmiudemy/user', "./Dockerfile")
-                 docker.withRegistry('https://registry.hub.docker.com', 'Docker') {
-                 customImage.push("${env.BUILD_NUMBER}")
-                 }                     
-           }
-        }
+
 	  }
     }
 }
