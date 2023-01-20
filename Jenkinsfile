@@ -1,17 +1,10 @@
-pipeline {
-  agent any
-    tools {
-      maven 'Maven'
-                 jdk 'JDK-17'
+node {
+    def mvnHome
+    stage('Preparation') {
+        mvnHome = tool 'M3'
+        sh "${mvnHome}/bin/mvn --version"
     }
-    stages {      
-        stage('Maven Build') {
-            steps { 
-                
-                    sh 'mvn  clean install'
-            }
-        }
-
-	  }
+    stage('Build') {
+        sh "${mvnHome}/bin/mvn clean install"
     }
-
+}
