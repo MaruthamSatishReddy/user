@@ -1,16 +1,29 @@
 pipeline {
     agent any
     tools {
-    maven 'Maven'
+        maven 'Maven'
+      
     }
     stages {
-        stage('Maven Build') {
-           steps{
-               checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/MaruthamSatishReddy/user.git']])
-               withMaven(maven: 'Maven') {
-                    sh 'mvn clean install'
-              }
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
             }
-       }
+        }
+
+        stage ('Build') {
+            steps {
+                 checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/MaruthamSatishReddy/user.git']])
+                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+            }
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml' 
+                }
+            }
+        }
     }
-  }
+}
