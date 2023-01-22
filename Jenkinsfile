@@ -1,13 +1,13 @@
 pipeline {
     agent any
     tools {
-    maven 'Maven 3.8.1'
+    maven 'Maven'
     }
     stages {
         stage('Maven Build') {
            steps{
                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/MaruthamSatishReddy/user.git']])
-               bat 'mvn clean install'
+               sh 'mvn clean install'
            
          }
        }
