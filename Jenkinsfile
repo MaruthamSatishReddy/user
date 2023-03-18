@@ -31,3 +31,4 @@ stage('Build and Push Docker Image') {
     }
   }
 }
+}
