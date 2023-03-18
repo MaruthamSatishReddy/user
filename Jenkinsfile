@@ -1,29 +1,35 @@
 pipeline {
-    agent any
-    tools {
-        maven 'Maven'
-      
-    }
-    stages {
-        stage ('Initialize') {
-            steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                '''
-            }
-        }
+  agent any
 
-        stage ('Build') {
-            steps {
-                 checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/MaruthamSatishReddy/user.git']])
-                sh 'mvn -Dmaven.test.failure.ignore=true install' 
-            }
-            post {
-                success {
-                    junit 'target/surefire-reports/**/*.xml' 
-                }
-            }
+  stages {
+    stage('Build') {
+      steps {
+
+        sh 'mvn clean package'
+
+        // Build the Docker image using the Dockerfile
+        script {
+          docker.build('user-service', '.')
         }
+      }
     }
+
+    stage('Publish') {
+      steps {
+        // Push the Docker image to a Docker registry
+        docker.withRegistry('https://hub.docker.com/', 'Docker') {
+          dockerImage.push()
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      // Clean up the Docker image after the build
+      script {
+        dockerImage.remove()
+      }
+    }
+  }
 }
