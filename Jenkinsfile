@@ -17,7 +17,7 @@ pipeline {
     stage('Publish') {
       steps {
         // Push the Docker image to a Docker registry
-        docker.withRegistry('https://hub.docker.com/', 'Docker') {
+      docker.withRegistry(credentialsId: 'Docker', url: 'https://hub.docker.com/') {
           dockerImage.push()
         }
       }
