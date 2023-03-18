@@ -1,15 +1,31 @@
 pipeline {
-    agent any
-    tools {
-    maven 'Maven 3.6.3'
+  agent any
+
+  stages {
+    stage('Build') {
+      steps {
+        sh 'mvn clean package'
+        script {
+          docker.build('user-service', '.')
+        }
+      }
     }
-    stages {
-        stage('Maven Build') {
-           steps{
-               withMaven(maven: 'Maven 3.6.3') {
-               sh 'mvn clean install'
-           }
-         }
-       }
+
+    stage('Publish') {
+      steps {
+        // Push the Docker image to a Docker registry
+        docker.withRegistry('https://hub.docker.com/', 'Docker') {
+          dockerImage.push()
+        }
+      }
     }
   }
+
+  post {
+    always {
+        script {
+        dockerImage.remove()
+      }
+    }
+  }
+}
