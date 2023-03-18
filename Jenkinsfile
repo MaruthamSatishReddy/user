@@ -20,15 +20,6 @@ stage('Build and Push Docker Image') {
          }
       }
    }
-}
-
-  post {
-    always {
-      // Clean up the Docker image after the build
-      script {
-        dockerImage.remove()
-      }
-    }
+ }
   }
-}
 }
