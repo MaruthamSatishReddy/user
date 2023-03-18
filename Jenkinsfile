@@ -11,15 +11,5 @@ pipeline {
       }
     }
 
-stage('Build and Push Docker Image') {
-   steps {
-      script {
-         docker.withRegistry(credentialsId: 'Docker', url: 'https://hub.docker.com/') {
-            docker.build('user-service')
-            docker.withPush()
-         }
-      }
-   }
- }
   }
 }
