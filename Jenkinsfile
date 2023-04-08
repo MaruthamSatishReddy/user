@@ -16,6 +16,11 @@ pipeline {
                   mavenBuild()
                }
             }
+      stage('Maven Unit Test')  {
+            steps{
+            mvnTest()
+            }
+      }
          }
    }
 
