@@ -16,16 +16,16 @@ pipeline {
                   mavenBuild()
                }
             }
-      stage('Maven Unit Test')  {
-            steps{
-            mvnTest()
+      stage('Maven Unit Test') {
+            steps {
+            mavenTest()
             }
-      }
-      stage('Maven Integration Test')  {
+          }
+      stage('Maven Integration Test') {
                   steps{
                   mavenIntegrationTest()
                   }
-            }
-         }
-   }
+               }
+           }
+     }
 
